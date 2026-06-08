@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Tuple, List
 
-# Классы необходимые для понятной работы алгоритма
+# Классы необходимые для понятной работы алгоритма 
 
 @dataclass
 class Depot:
