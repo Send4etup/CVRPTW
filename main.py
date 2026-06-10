@@ -1,19 +1,16 @@
-import pyvrp
 import json
 
 from models import Scenario, Depot, Weights, Order
+from solver import solve
 
-# Парсинг инпута в модели для работы
+
 def parse(path: str) -> Scenario:
     with open(path) as f:
         raw = json.load(f)
 
     depot = Depot(**raw["depot"])
     weights = Weights(**raw["weights"])
-
-    orders = []
-    for i in range(len(raw["orders"])):
-        orders.append(Order(**raw["orders"][i]))
+    orders = [Order(**o) for o in raw["orders"]]
 
     return Scenario(
         depot=depot,
@@ -23,10 +20,11 @@ def parse(path: str) -> Scenario:
         vehicle_speed=raw["vehicle_speed"],
         loader_speed=raw["loader_speed"],
         vehicle_shift_size=raw["vehicle_shift_size"],
-        loader_shift_size=raw["loader_shift_size"]
+        loader_shift_size=raw["loader_shift_size"],
     )
+
 
 if __name__ == "__main__":
     scenario = parse("data/input.json")
-
-    print(scenario)
+    result = solve(scenario)
+    print(json.dumps(result, indent=2))
